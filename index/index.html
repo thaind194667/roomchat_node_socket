@@ -1,0 +1,63 @@
+<html>
+  
+<head>
+  <title>Chat room </title>
+  <link rel="stylesheet" href="./index.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+  
+<body>
+  <div id="chat">
+  <label for="message" class="h4" >Message:</label>
+  <ul id="messages"></ul>
+  <form>
+    <div class="form-group">
+      <textarea id="m" class="form-control" rows="5" placeholder="Enter your message" required></textarea>
+    </div>
+    <button type="submit" id="form-submit" class="btn btn-success btn-lg pull-right ">Submit</button>
+  </form>
+  <div id="userCount"></div>
+  </div>
+  
+  <div id="hello">
+    <label for="name">Enter your name: </label> <br/>
+    <input type="text" id="name" name="name" required> <br/>
+    <button id="enter"> Enter </button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    $(function () {
+      var socket = io();
+      // socket.emit('connection');
+      $('form').submit(function(){
+        socket.emit('chat message', $('#m').val());
+        $('#m').val('');
+        return false;
+      });
+
+      $('#enter').click(function() {
+        socket.emit('enter', $('#name').val());
+        $('#hello').hide();
+      });
+
+      socket.on('change', function(count) {
+        $('#userCount').html(`There are ${count} users online!`);
+      });
+      
+      socket.on('chat message', function(msg){
+        let messages = document.getElementById('messages');
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(msg));
+        li.style.color = "#" + randomColor;
+        messages.appendChild(li);
+        $("#messages").scrollTop(function() { return this.scrollHeight; });
+      });
+    });
+  </script>
+</body>
+</html>

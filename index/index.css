@@ -1,0 +1,28 @@
+#messages {
+  overflow: scroll;
+/*   color: red; */
+  height: 60%; 
+  border: solid 1px #cecece; 
+  list-style: none;
+/*   display: flex;
+  flex-direction: column-reverse; */
+}
+
+#hello {
+  position: absolute;
+  top: 0%;
+  height: 100%;
+  width: 100%;
+/*   top: 20%;
+  left: 20%; */
+  text-align: center;
+  vertical-align: center;
+  color:#80ffc3;
+  background: rgba(0, 0, 0, 0.5);
+  font-size: 400%;
+  z-index: 1;
+}
+
+#chat {
+  z-index: -1;
+}
